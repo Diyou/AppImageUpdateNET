@@ -1,3 +1,4 @@
 [submodule "submodules/swig"]
 	path = submodules/swig
 	url = https://github.com/swig/swig
+	branch = master
