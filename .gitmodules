@@ -2,3 +2,6 @@
 	path = submodules/swig
 	url = https://github.com/swig/swig
 	branch = master
+[submodule "submodules/AppImageUpdate"]
+	path = submodules/AppImageUpdate
+	url = https://github.com/AppImage/AppImageUpdate
