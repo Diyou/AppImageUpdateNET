@@ -3,11 +3,8 @@ cmake_minimum_required(VERSION 3.22)
 project(AppImageUpdateNET LANGUAGES C CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_MODULE_PATH
-        ${CMAKE_CURRENT_SOURCE_DIR}/tests;
-)
 
-add_subdirectory(submodules/AppImageUpdate EXCLUDE_FROM_ALL)
+add_subdirectory(src/AppImageUpdate EXCLUDE_FROM_ALL)
 get_target_property(libappimageupdate_includes libappimageupdate_static INCLUDE_DIRECTORIES)
 
 find_package(SWIG 4.1.0 COMPONENTS csharp REQUIRED)
