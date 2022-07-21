@@ -9,4 +9,19 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
-submodules/*
+
+# Git Submodules
+submodules
+
+# Build results
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease
+[Oo]bj/
+
+# Rider files
+.idea/
+
+# SWIG generated files
+AppImage/Update
+AppImage/runtimes

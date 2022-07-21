@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup Label="Project">
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyTitle>AppImage Updater</AssemblyTitle>
+    <PackageId>Diyou.AppImageUpdateNET</PackageId>
+    <NeutralLanguage>en</NeutralLanguage>
+    <Authors>Diyou</Authors>
+    <Company>Diyou</Company>
+    <Title>AppImage Updater</Title>
+    <Description>A non-official wrapper of AppImageUpdate to C# for use in dotnet AppImage apps.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>Linux, Updater, AppImage</PackageTags>
+    <RepositoryUrl>https://github.com/Diyou/AppImageUpdateNET</RepositoryUrl>
+    <RootNamespace>AppImage</RootNamespace>
+    <IncludeBuildOutput>True</IncludeBuildOutput>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="runtimes\*\*\*.*">
+      <Pack>True</Pack>
+      <!-- <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> -->
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <PackagePath>runtimes</PackagePath>
+    </None>
+  </ItemGroup>
+</Project>
