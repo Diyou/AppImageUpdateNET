@@ -22,6 +22,9 @@ submodules
 # Rider files
 .idea/
 
+# ReSharper files
+*.[Dd]ot[Ss]ettings.user
+
 # SWIG generated files
 AppImage/Update
 AppImage/runtimes

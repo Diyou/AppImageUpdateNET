@@ -1,6 +1,11 @@
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.22)
 
 project(AppImageUpdateNET LANGUAGES C CXX)
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_MODULE_PATH
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests;
+)
 
 add_subdirectory(submodules/AppImageUpdate EXCLUDE_FROM_ALL)
 get_target_property(libappimageupdate_includes libappimageupdate_static INCLUDE_DIRECTORIES)
@@ -36,4 +41,21 @@ add_custom_target(${PROJECT_NAME}.nupkg
         dotnet pack ${CMAKE_CURRENT_SOURCE_DIR}/AppImage/AppImage.csproj -o ${CMAKE_CURRENT_BINARY_DIR} -c Release --nologo
         COMMENT "Creating the ${PROJECT_NAME} NuGet Package"
 )
-add_dependencies(${PROJECT_NAME}.nupkg appimageupdate)
+
+enable_testing()
+add_subdirectory(tests)
+
+add_custom_target(TESTS ctest -C $<CONFIGURATION> --output-on-failure
+        DEPENDS appimageupdate
+        COMMENT "Run Tests..."
+)
+
+add_dependencies(${PROJECT_NAME}.nupkg appimageupdate TESTS)
+
+if (MSVC)
+    target_compile_options(libzsync PRIVATE /W1)
+    target_compile_options(libzsync2_static PRIVATE /W1)
+else()
+    target_compile_options(libzsync PRIVATE -Wno-everything)
+    target_compile_options(libzsync2_static PRIVATE -Wno-everything)
+endif()

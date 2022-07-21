@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppImage", "AppImage\AppImage.csproj", "{CD57D4EC-D7DC-447A-9956-8E7BF936F21F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwigConstructorException", "tests\SwigConstructorException\SwigConstructorException.csproj", "{F3991876-265E-42CA-A9A8-F84207EF534E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = TRUE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD57D4EC-D7DC-447A-9956-8E7BF936F21F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD57D4EC-D7DC-447A-9956-8E7BF936F21F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD57D4EC-D7DC-447A-9956-8E7BF936F21F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD57D4EC-D7DC-447A-9956-8E7BF936F21F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3991876-265E-42CA-A9A8-F84207EF534E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3991876-265E-42CA-A9A8-F84207EF534E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3991876-265E-42CA-A9A8-F84207EF534E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3991876-265E-42CA-A9A8-F84207EF534E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
