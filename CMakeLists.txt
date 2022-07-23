@@ -4,6 +4,9 @@ project(AppImageUpdateNET LANGUAGES C CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+set(AppImage.csprojDIR "${CMAKE_CURRENT_SOURCE_DIR}/src/AppImage")
+set(AppImage.csproj "${AppImage.csprojDIR}/AppImage.csproj")
+
 add_subdirectory(src/AppImageUpdate EXCLUDE_FROM_ALL)
 get_target_property(libappimageupdate_includes libappimageupdate_static INCLUDE_DIRECTORIES)
 
@@ -16,38 +19,48 @@ set_source_files_properties(src/Update.i PROPERTIES
         SWIG_OUTDIR ${CMAKE_CURRENT_BINARY_DIR}
         #SWIG_FLAGS "-includeall"
 )
+
 set_property(SOURCE src/Update.i PROPERTY COMPILE_OPTIONS
         -namespace AppImage.Update
 )
 
 # x64 lib
 SWIG_ADD_LIBRARY(appimageupdate
-        TYPE SHARED
+        TYPE MODULE
         LANGUAGE csharp
-        OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/AppImage/Update
+        OUTPUT_DIR ${AppImage.csprojDIR}/Update/SWIG/
         SOURCES src/Update.i
 )
 set_target_properties(appimageupdate PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/AppImage/runtimes/linux-x64/native
+        LIBRARY_OUTPUT_DIRECTORY ${AppImage.csprojDIR}/runtimes/linux-x64/native
 )
 target_compile_features(appimageupdate PRIVATE cxx_std_17)
+
 SWIG_LINK_LIBRARIES(appimageupdate libappimageupdate_static)
 
 # pack dotnet project
 add_custom_target(${PROJECT_NAME}.nupkg
-        dotnet pack ${CMAKE_CURRENT_SOURCE_DIR}/AppImage/AppImage.csproj -o ${CMAKE_CURRENT_BINARY_DIR} -c Release --nologo
+        dotnet pack ${AppImage.csproj} -o ${CMAKE_CURRENT_BINARY_DIR} -c Release --nologo
         COMMENT "Creating the ${PROJECT_NAME} NuGet Package"
+        #${CMAKE_COMMAND} -E copy_if_different "${AppImage.csprojDIR}/bin/Release/*.nupkg" "${CMAKE_CURRENT_BINARY_DIR}"
+        #COMMENT "Copy the ${PROJECT_NAME} NuGet Package ➡ ${CMAKE_CURRENT_BINARY_DIR}"
+        DEPENDS
+            appimageupdate
+            TESTS
 )
 
 enable_testing()
 add_subdirectory(tests)
 
-add_custom_target(TESTS ctest -C $<CONFIGURATION> --output-on-failure
-        DEPENDS appimageupdate
-        COMMENT "Run Tests..."
+add_custom_target(${PROJECT_NAME} dotnet build ${AppImage.csproj} -c Release --nologo
+        COMMENT "Build ${PROJECT_NAME}..."
 )
-
-add_dependencies(${PROJECT_NAME}.nupkg appimageupdate TESTS)
+add_custom_target(TESTS ctest -C $<CONFIGURATION> --output-on-failure
+        COMMENT "Run Tests..."
+        DEPENDS
+            appimageupdate
+            ${PROJECT_NAME}
+)
 
 if (MSVC)
     target_compile_options(libzsync PRIVATE /W1)

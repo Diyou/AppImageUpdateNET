@@ -4,6 +4,7 @@
     <AssemblyTitle>AppImage Updater</AssemblyTitle>
     <PackageId>Diyou.AppImageUpdateNET</PackageId>
     <NeutralLanguage>en</NeutralLanguage>
+    <PackageIcon>appimage.png</PackageIcon>
     <Authors>Diyou</Authors>
     <Company>Diyou</Company>
     <Title>AppImage Updater</Title>
@@ -11,15 +12,19 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Linux, Updater, AppImage</PackageTags>
     <RepositoryUrl>https://github.com/Diyou/AppImageUpdateNET</RepositoryUrl>
-    <RootNamespace>AppImage</RootNamespace>
-    <IncludeBuildOutput>True</IncludeBuildOutput>
+    <OutputType>Library</OutputType>
   </PropertyGroup>
+
   <ItemGroup>
-    <None Include="runtimes\*\*\*.*">
+    <None Include="$(ProjectDir)runtimes\*\native\*.*">
       <Pack>True</Pack>
-      <!-- <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> -->
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <PackagePath>runtimes</PackagePath>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appimage.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  
 </Project>

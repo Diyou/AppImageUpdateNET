@@ -26,5 +26,5 @@ submodules
 *.[Dd]ot[Ss]ettings.user
 
 # SWIG generated files
-AppImage/Update
-AppImage/runtimes
+*/AppImage/Update
+*/AppImage/runtimes
