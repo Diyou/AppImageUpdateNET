@@ -16,7 +16,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="$(ProjectDir)runtimes\*\native\*.*">
+    <NativeLibs Include="runtimes/**/*.*" />
+    <None Include="@(NativeLibs)">
       <Pack>True</Pack>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <PackagePath>runtimes</PackagePath>
@@ -26,5 +27,12 @@
   <ItemGroup>
     <None Include="appimage.png" Pack="true" PackagePath="\" />
   </ItemGroup>
+  
+  <Target Name="BuildNativeLibs" BeforeTargets="CollectPackageReferences">
+    <Exec Command="grep -c processor /proc/cpuinfo | (read -r rc &amp;&amp; exit &quot;$rc&quot;)" IgnoreExitCode="true" Condition="$([MSBuild]::IsOsPlatform('Linux'))">
+      <Output TaskParameter="ExitCode" PropertyName="THREADCOUNT" />
+    </Exec>
+    <Exec Command="/usr/bin/cmake --build $(ProjectDir)../../build_other --target appimageupdate -j $(THREADCOUNT)" />
+  </Target>
   
 </Project>

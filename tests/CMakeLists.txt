@@ -10,8 +10,8 @@ file(GLOB unittests RELATIVE ${CMAKE_CURRENT_LIST_DIR} ${CMAKE_CURRENT_LIST_DIR}
 foreach(unittest ${unittests})
 	if(IS_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/${unittest})
 		add_test(NAME ${unittest} COMMAND
-				${CMAKE_COMMAND} -E env
-					LD_LIBRARY_PATH=runtimes/linux-x64/native
+				#${CMAKE_COMMAND} -E env
+				#	LD_LIBRARY_PATH=runtimes/linux-x64/native
 				dotnet test --filter FullyQualifiedName~${unittest} -c Release --nologo
 				WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
 		)

@@ -28,7 +28,7 @@ set_property(SOURCE src/Update.i PROPERTY COMPILE_OPTIONS
 SWIG_ADD_LIBRARY(appimageupdate
         TYPE MODULE
         LANGUAGE csharp
-        OUTPUT_DIR ${AppImage.csprojDIR}/Update/SWIG/
+        OUTPUT_DIR ${AppImage.csprojDIR}/Update/.build/SWIG/
         SOURCES src/Update.i
 )
 set_target_properties(appimageupdate PROPERTIES
@@ -38,27 +38,30 @@ target_compile_features(appimageupdate PRIVATE cxx_std_17)
 
 SWIG_LINK_LIBRARIES(appimageupdate libappimageupdate_static)
 
+# build dotnet project
+add_custom_target(${PROJECT_NAME} dotnet build ${AppImage.csproj} -c Release --nologo
+        COMMENT "Build ${PROJECT_NAME}..."
+        DEPENDS
+            appimageupdate
+)
+
 # pack dotnet project
 add_custom_target(${PROJECT_NAME}.nupkg
-        dotnet pack ${AppImage.csproj} -o ${CMAKE_CURRENT_BINARY_DIR} -c Release --nologo
+        dotnet pack ${AppImage.csproj} -o ${CMAKE_CURRENT_BINARY_DIR} -c Release --no-build --nologo
         COMMENT "Creating the ${PROJECT_NAME} NuGet Package"
         #${CMAKE_COMMAND} -E copy_if_different "${AppImage.csprojDIR}/bin/Release/*.nupkg" "${CMAKE_CURRENT_BINARY_DIR}"
         #COMMENT "Copy the ${PROJECT_NAME} NuGet Package ➡ ${CMAKE_CURRENT_BINARY_DIR}"
         DEPENDS
-            appimageupdate
+            ${PROJECT_NAME}
             TESTS
 )
 
 enable_testing()
 add_subdirectory(tests)
 
-add_custom_target(${PROJECT_NAME} dotnet build ${AppImage.csproj} -c Release --nologo
-        COMMENT "Build ${PROJECT_NAME}..."
-)
 add_custom_target(TESTS ctest -C $<CONFIGURATION> --output-on-failure
         COMMENT "Run Tests..."
         DEPENDS
-            appimageupdate
             ${PROJECT_NAME}
 )
 
