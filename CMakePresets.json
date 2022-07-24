@@ -13,6 +13,12 @@
           "CMAKE_WARN_DEPRECATED":false,
           "CMAKE_POLICY_DEFAULT_CMP0122": "NEW",
           "CMAKE_POLICY_DEFAULT_CMP0077": "NEW"
+        },
+        "vendor": {
+          "microsoft.com/VisualStudioSettings/CMake/1.0": {
+            "enableClangTidyCodeAnalysis": true,
+            "intelliSenseMode": "windows-clang-x64"
+          }
         }
       },
       {
@@ -70,10 +76,6 @@
       }
     ],
     "testPresets": [
-      {
-        "name": "Default",
-        "hidden": true
-      },
       {
         "name": "Unit Tests",
         "configurePreset": "Debug",

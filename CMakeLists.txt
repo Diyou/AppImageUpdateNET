@@ -4,10 +4,10 @@ project(AppImageUpdateNET LANGUAGES C CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-set(AppImage.csprojDIR "${CMAKE_CURRENT_SOURCE_DIR}/src/AppImage")
-set(AppImage.csproj "${AppImage.csprojDIR}/AppImage.csproj")
+set(CSharpWrapper.csprojDIR "${CMAKE_CURRENT_SOURCE_DIR}/CSharpWrapper")
+set(CSharpWrapper.csproj "${CSharpWrapper.csprojDIR}/CSharpWrapper.csproj")
 
-add_subdirectory(src/AppImageUpdate EXCLUDE_FROM_ALL)
+add_subdirectory(AppImageUpdate EXCLUDE_FROM_ALL)
 get_target_property(libappimageupdate_includes libappimageupdate_static INCLUDE_DIRECTORIES)
 
 find_package(SWIG 4.1.0 COMPONENTS csharp REQUIRED)
@@ -28,18 +28,18 @@ set_property(SOURCE src/Update.i PROPERTY COMPILE_OPTIONS
 SWIG_ADD_LIBRARY(appimageupdate
         TYPE MODULE
         LANGUAGE csharp
-        OUTPUT_DIR ${AppImage.csprojDIR}/Update/SWIG
+        OUTPUT_DIR ${CSharpWrapper.csprojDIR}/Update/SWIG
         SOURCES src/Update.i
 )
 set_target_properties(appimageupdate PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY ${AppImage.csprojDIR}/runtimes/linux-x64/native
+        LIBRARY_OUTPUT_DIRECTORY ${CSharpWrapper.csprojDIR}/runtimes/linux-x64/native
 )
 target_compile_features(appimageupdate PRIVATE cxx_std_17)
 
 SWIG_LINK_LIBRARIES(appimageupdate libappimageupdate_static)
 
 # build dotnet project
-add_custom_target(${PROJECT_NAME} dotnet build ${AppImage.csproj} -c Release --nologo
+add_custom_target(${PROJECT_NAME} dotnet build ${CSharpWrapper.csproj} -c Release --nologo
         COMMENT "Build ${PROJECT_NAME}..."
         DEPENDS
             appimageupdate
@@ -47,9 +47,9 @@ add_custom_target(${PROJECT_NAME} dotnet build ${AppImage.csproj} -c Release --n
 
 # pack dotnet project
 add_custom_target(${PROJECT_NAME}.nupkg
-        dotnet pack ${AppImage.csproj} -o ${CMAKE_CURRENT_BINARY_DIR} -c Release --no-build --nologo
+        dotnet pack ${CSharpWrapper.csproj} -o ${CMAKE_CURRENT_BINARY_DIR} -c Release --no-build --nologo
         COMMENT "Creating the ${PROJECT_NAME} NuGet Package"
-        #${CMAKE_COMMAND} -E copy_if_different "${AppImage.csprojDIR}/bin/Release/*.nupkg" "${CMAKE_CURRENT_BINARY_DIR}"
+        #${CMAKE_COMMAND} -E copy_if_different "${CSharpWrapper.csprojDIR}/bin/Release/*.nupkg" "${CMAKE_CURRENT_BINARY_DIR}"
         #COMMENT "Copy the ${PROJECT_NAME} NuGet Package ➡ ${CMAKE_CURRENT_BINARY_DIR}"
         DEPENDS
             ${PROJECT_NAME}
@@ -66,12 +66,15 @@ add_custom_target(TESTS ctest -C $<CONFIGURATION> --output-on-failure
 )
 
 if (MSVC)
-    target_compile_options(libzsync PRIVATE /W1)
-    target_compile_options(libzsync2_static PRIVATE /W1)
+        target_compile_options(libzsync PRIVATE /W1)
+        target_compile_options(libzsync2 PRIVATE /W1)
+        target_compile_options(libzsync2_static PRIVATE /W1)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
         target_compile_options(libzsync PRIVATE -w)
+        target_compile_options(libzsync2 PRIVATE -w)
         target_compile_options(libzsync2_static PRIVATE -w)
 else()
-    target_compile_options(libzsync PRIVATE -Wno-everything)
-    target_compile_options(libzsync2_static PRIVATE -Wno-everything)
+        target_compile_options(libzsync PRIVATE -Wno-everything)
+        target_compile_options(libzsync2 PRIVATE -Wno-everything)
+        target_compile_options(libzsync2_static PRIVATE -Wno-everything)
 endif()

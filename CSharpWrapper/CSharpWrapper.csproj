@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="appimage.png"
+    <None Include="../appimage.png"
           Pack="true"
           PackagePath="/" />
   </ItemGroup>
@@ -40,9 +40,9 @@
               PropertyName="THREADCOUNT" />
     </Exec>
     <Exec Command="cmake --preset $(Configuration)" 
-          WorkingDirectory="$(ProjectDir)../../" />
+          WorkingDirectory="$(ProjectDir)../" />
     <Exec Command="cmake --build --preset $(Configuration) --target appimageupdate -j $(THREADCOUNT)" 
-          WorkingDirectory="$(ProjectDir)../../" />
+          WorkingDirectory="$(ProjectDir)../" />
   </Target>
   
 </Project>

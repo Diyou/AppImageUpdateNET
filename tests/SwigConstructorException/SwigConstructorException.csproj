@@ -14,7 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="../../src/AppImage/AppImage.csproj" />
+        <ProjectReference Include="../../CSharpWrapper/CSharpWrapper.csproj" />
     </ItemGroup>
 
     <ItemGroup>
