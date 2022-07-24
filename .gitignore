@@ -16,9 +16,6 @@ _deps
 /*[Bb]uild*/
 .build
 
-# Resharper
-.idea/
-
 # dotnet
 
 *.swp

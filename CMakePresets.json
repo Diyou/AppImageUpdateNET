@@ -1,0 +1,82 @@
+{
+    "version": 2,
+    "cmakeMinimumRequired": {
+      "major": 3,
+      "minor": 20,
+      "patch": 0
+    },
+    "configurePresets": [
+      {
+        "name": "Default",
+        "hidden": true,
+        "cacheVariables": {
+          "CMAKE_WARN_DEPRECATED":false,
+          "CMAKE_POLICY_DEFAULT_CMP0122": "NEW",
+          "CMAKE_POLICY_DEFAULT_CMP0077": "NEW"
+        }
+      },
+      {
+        "name": "Debug",
+        "inherits":[
+          "Default"
+        ],
+        "displayName": "Debug Config",
+        "description": "Debug build using Ninja generator",
+        "generator": "Ninja",
+        "binaryDir": "${sourceDir}/build/Debug"
+      },
+      {
+        "name": "Release",
+        "inherits":[
+          "Default"
+        ],
+        "displayName": "Release Config",
+        "description": "Release build using Ninja generator",
+        "generator": "Ninja",
+        "binaryDir": "${sourceDir}/build/Release"
+      }
+    ],
+    "buildPresets": [
+      {
+        "name": "default",
+        "hidden": true,
+        "targets":[
+          "appimageupdate",
+          "AppImageUpdateNET",
+          "AppImageUpdateNET.nupkg"
+        ]
+      },
+      {
+        "name": "Debug",
+        "inherits": [
+          "default"
+        ],
+        "configurePreset": "Debug",
+        "configuration": "Debug"
+      },
+      {
+        "name": "Release",
+        "inherits":[
+          "default"
+        ],
+        "configurePreset": "Release",
+        "configuration": "Release"
+      }
+    ],
+    "testPresets": [
+      {
+        "name": "Default",
+        "hidden": true
+      },
+      {
+        "name": "Unit Tests",
+        "configurePreset": "Debug",
+        "output": {
+          "outputOnFailure": true
+        },
+        "execution": {
+          "stopOnFailure": true
+        }
+      }
+    ]
+  }

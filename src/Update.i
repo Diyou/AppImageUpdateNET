@@ -8,7 +8,6 @@
     #include "appimage/update.h"
 %}
 
-%catches(std::invalid_argument) appimage::update::Updater::Updater;
-%catches(std::invalid_argument) appimage::update::Updater::testExec;
+%catches(std::invalid_argument,std::runtime_error) appimage::update::Updater::Updater;
 
 %include "appimage/update.h"

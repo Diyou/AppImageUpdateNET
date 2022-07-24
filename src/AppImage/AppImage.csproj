@@ -25,7 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="appimage.png" Pack="true" PackagePath="\" />
+    <None Include="appimage.png"
+          Pack="true"
+          PackagePath="\" />
   </ItemGroup>
   
   <Target Name="BuildNativeLibs"
