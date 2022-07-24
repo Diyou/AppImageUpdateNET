@@ -28,7 +28,7 @@ set_property(SOURCE src/Update.i PROPERTY COMPILE_OPTIONS
 SWIG_ADD_LIBRARY(appimageupdate
         TYPE MODULE
         LANGUAGE csharp
-        OUTPUT_DIR ${AppImage.csprojDIR}/Update/.build/SWIG/
+        OUTPUT_DIR ${AppImage.csprojDIR}/Update/SWIG
         SOURCES src/Update.i
 )
 set_target_properties(appimageupdate PROPERTIES
