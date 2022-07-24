@@ -27,19 +27,22 @@
   <ItemGroup>
     <None Include="appimage.png"
           Pack="true"
-          PackagePath="\" />
+          PackagePath="/" />
   </ItemGroup>
   
-  <Target Name="BuildNativeLibs"
-          BeforeTargets="CollectPackageReferences"
+  <Target Name="BuildNativeLibs" 
+          BeforeTargets="CollectPackageReferences" 
           Condition="!Exists('$(ProjectDir)Update')">
-    <Exec Command="grep -c processor /proc/cpuinfo | (read -r rc &amp;&amp; exit &quot;$rc&quot;)"
-          IgnoreExitCode="true"
+    <Exec Command="grep -c processor /proc/cpuinfo | (read -r rc &amp;&amp; exit &quot;$rc&quot;)" 
+          IgnoreExitCode="true" 
           Condition="$([MSBuild]::IsOsPlatform('Linux'))">
-      <Output TaskParameter="ExitCode"
+      <Output TaskParameter="ExitCode" 
               PropertyName="THREADCOUNT" />
     </Exec>
-    <Exec Command="/usr/bin/cmake --build $(ProjectDir)../../build_other --target appimageupdate -j $(THREADCOUNT)" />
+    <Exec Command="cmake --preset $(Configuration)" 
+          WorkingDirectory="$(ProjectDir)../../" />
+    <Exec Command="cmake --build --preset $(Configuration) --target appimageupdate -j $(THREADCOUNT)" 
+          WorkingDirectory="$(ProjectDir)../../" />
   </Target>
   
 </Project>

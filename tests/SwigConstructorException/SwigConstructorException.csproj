@@ -14,7 +14,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="$(SolutionDir)src/AppImage/AppImage.csproj" />
+        <ProjectReference Include="../../src/AppImage/AppImage.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="../appimagetool-x86_64.AppImage">
+        <Link>$(OutDir)appimagetool-x86_64.AppImage</Link>
+      </None>
     </ItemGroup>
 
     <Target Name="MyCopyFilesToOutputDirectory" AfterTargets="Build">

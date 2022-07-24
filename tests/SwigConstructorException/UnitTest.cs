@@ -5,6 +5,7 @@ using NUnit.Framework;
 
 namespace SwigConstructorException;
 
+// ReSharper disable UnusedVariable
 public class Tests
 {
     [SetUp]
@@ -29,7 +30,7 @@ public class Tests
     {
         Assert.DoesNotThrow(() =>
         {
-            var updater = new Updater("test.AppImage");
+            var updater = new Updater("appimagetool-x86_64.AppImage");
         });
     }
 }
