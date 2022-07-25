@@ -17,12 +17,6 @@
         <ProjectReference Include="../../CSharpWrapper/CSharpWrapper.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <None Include="../appimagetool-x86_64.AppImage">
-        <Link>$(OutDir)appimagetool-x86_64.AppImage</Link>
-      </None>
-    </ItemGroup>
-
     <Target Name="MyCopyFilesToOutputDirectory" AfterTargets="Build">
         <ItemGroup>
             <NativeLibs Include="$(OutDir)runtimes/linux-x64/native/*.*" />
