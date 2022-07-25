@@ -28,7 +28,7 @@ set_property(SOURCE src/Update.i PROPERTY COMPILE_OPTIONS
 SWIG_ADD_LIBRARY(appimageupdate
         TYPE MODULE
         LANGUAGE csharp
-        OUTPUT_DIR ${CSharpWrapper.csprojDIR}/Update/SWIG
+        OUTPUT_DIR ${CSharpWrapper.csprojDIR}/SWIG
         SOURCES src/Update.i
 )
 set_target_properties(appimageupdate PROPERTIES
@@ -38,8 +38,15 @@ target_compile_features(appimageupdate PRIVATE cxx_std_17)
 
 SWIG_LINK_LIBRARIES(appimageupdate libappimageupdate_static)
 
+string(TOLOWER ${CMAKE_BUILD_TYPE} MSBUILD_CONFIG)
+if(MSBUILD_CONFIG STREQUAL "debug")
+        set(MSBUILD_CONFIG "Debug")
+else()
+        set(MSBUILD_CONFIG "Release")
+endif()
+
 # build dotnet project
-add_custom_target(${PROJECT_NAME} dotnet build ${CSharpWrapper.csproj} -c Release --nologo
+add_custom_target(${PROJECT_NAME} dotnet build ${CSharpWrapper.csproj} -c ${MSBUILD_CONFIG} --nologo
         COMMENT "Build ${PROJECT_NAME}..."
         DEPENDS
             appimageupdate
@@ -47,7 +54,7 @@ add_custom_target(${PROJECT_NAME} dotnet build ${CSharpWrapper.csproj} -c Releas
 
 # pack dotnet project
 add_custom_target(${PROJECT_NAME}.nupkg
-        dotnet pack ${CSharpWrapper.csproj} -o ${CMAKE_CURRENT_BINARY_DIR} -c Release --no-build --nologo
+        dotnet pack ${CSharpWrapper.csproj} -o ${CMAKE_CURRENT_BINARY_DIR} -c ${MSBUILD_CONFIG} --no-build --nologo
         COMMENT "Creating the ${PROJECT_NAME} NuGet Package"
         #${CMAKE_COMMAND} -E copy_if_different "${CSharpWrapper.csprojDIR}/bin/Release/*.nupkg" "${CMAKE_CURRENT_BINARY_DIR}"
         #COMMENT "Copy the ${PROJECT_NAME} NuGet Package ➡ ${CMAKE_CURRENT_BINARY_DIR}"
