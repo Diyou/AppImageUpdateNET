@@ -14,13 +14,14 @@
     <RepositoryUrl>https://github.com/Diyou/AppImageUpdateNET</RepositoryUrl>
     <OutputType>Library</OutputType>
     <AssemblyName>AppImageUpdate</AssemblyName>
+    <RootNamespace>AppImage.Update</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <NativeLibs Include="runtimes/**/*.*" />
     <None Include="@(NativeLibs)">
       <Pack>True</Pack>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <PackagePath>runtimes</PackagePath>
     </None>
   </ItemGroup>

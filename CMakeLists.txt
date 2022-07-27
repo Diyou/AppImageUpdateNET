@@ -29,7 +29,7 @@ set_source_files_properties(src/Update.i PROPERTIES
 )
 
 set_property(SOURCE src/Update.i PROPERTY COMPILE_OPTIONS
-        -namespace AppImage.Update
+        -namespace AppImage.Update.Native
 )
 
 # x64 lib

@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Versioning;
 using System.Threading;
-using AppImage.Update;
+using AppImage.Update.Native;
 using NUnit.Framework;
 
 // ReSharper disable UnusedVariable

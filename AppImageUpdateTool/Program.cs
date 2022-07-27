@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using Mono.Options;
 
 // ReSharper disable once CheckNamespace
@@ -11,31 +6,29 @@ namespace AppImage.Update;
 
 internal static class UpdaterTool
 {
-    private static int verbosity;
-
+    private static List<string>? extra;
     public static void Main(string[] args)
     {
-        string appName = Path.GetFileName(Process.GetCurrentProcess()?.MainModule?.FileName)??"AppImageUpdateTool";
+        string appName = Path.GetFileName(Process.GetCurrentProcess().MainModule?.FileName)??"AppImageUpdateTool";
+        string? selfAppImagePath = Environment.GetEnvironmentVariable("APPIMAGE");
 
         bool shouldShowHelp = false;
-        var names = new List<string>();
-        int repeat = 1;
 
         var p = new OptionSet
         {
-            { "n|name=", "the name of someone to greet.", n => names.Add(n) },
-            { "r|repeat=", "the number of times to repeat the greeting.", (int r) => repeat = r },
-            {
-                "v", "increase debug message verbosity", v =>
-                {
-                    if (v != null) ++verbosity;
-                }
-            },
             { "h|help", "show this message and exit", h => shouldShowHelp = h != null },
-            { "V|version"}
+            { "V|version", "Display version information.", v => { } },
+            { "d|describe", "Parse and describe AppImage and its update information and exit.", d => { } },
+            { "j|check-for-update", "Check for update. Exits with code 1 if changes are available, 0 if there are not,other non-zero code in case of errors.", c => { } },
+            { "O|overwrite", "Overwrite existing file. If not specified, a new file will be created, and the old one will remain untouched.", o => { } },
+            { "r|remove-old", "Remove old AppImage after successful update.", r => { } },
         };
 
-        List<string> extra;
+        if (selfAppImagePath != null)
+        {
+            p.Add("self-update", "Update this AppImage.", su => { });
+        }
+
         try
         {
             extra = p.Parse(args);
