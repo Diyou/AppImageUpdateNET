@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpWrapper", "CSharpWrapper\CSharpWrapper.csproj", "{CD57D4EC-D7DC-447A-9956-8E7BF936F21F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwigConstructorException", "tests\UpdaterTests\UpdaterTests.csproj", "{F3991876-265E-42CA-A9A8-F84207EF534E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwigConstructorException", "Tests\UpdaterTests\UpdaterTests.csproj", "{F3991876-265E-42CA-A9A8-F84207EF534E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppImageUpdateTool", "AppImageUpdateTool\AppImageUpdateTool.csproj", "{47F24E12-E97D-4571-A102-96F428C00264}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +26,9 @@ Global
 		{F3991876-265E-42CA-A9A8-F84207EF534E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3991876-265E-42CA-A9A8-F84207EF534E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3991876-265E-42CA-A9A8-F84207EF534E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47F24E12-E97D-4571-A102-96F428C00264}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47F24E12-E97D-4571-A102-96F428C00264}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47F24E12-E97D-4571-A102-96F428C00264}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47F24E12-E97D-4571-A102-96F428C00264}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

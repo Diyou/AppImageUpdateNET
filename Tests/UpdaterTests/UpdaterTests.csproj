@@ -17,7 +17,7 @@
         <ProjectReference Include="../../CSharpWrapper/CSharpWrapper.csproj" />
     </ItemGroup>
 
-    <Target Name="MyCopyFilesToOutputDirectory" AfterTargets="Build">
+    <Target Name="CopyFilesToOutputDirectory" AfterTargets="Build">
         <ItemGroup>
             <NativeLibs Include="$(OutDir)runtimes/linux-x64/native/*.*" />
             <None Include="@(NativeLibs)" />

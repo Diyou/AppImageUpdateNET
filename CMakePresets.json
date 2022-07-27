@@ -7,6 +7,14 @@
     },
     "configurePresets": [
       {
+        "name": "multilib",
+        "hidden": true,
+        "cacheVariables": {
+          "CMAKE_C_FLAGS": "-m32",
+          "CMAKE_CXX_FLAGS": "-m32"
+        }
+      },
+      {
         "name": "Default",
         "hidden": true,
         "cacheVariables": {
@@ -46,6 +54,22 @@
         "description": "Release build using Ninja generator",
         "generator": "Ninja",
         "binaryDir": "${sourceDir}/build/Release"
+      },
+      {
+        "name": "Release32",
+        "inherits": [
+          "Release",
+          "multilib"
+        ],
+        "binaryDir": "${sourceDir}/build/Release32"
+      },
+      {
+        "name": "Debug32",
+        "inherits": [
+          "Debug",
+          "multilib"
+        ],
+        "binaryDir": "${sourceDir}/build/Debug32"
       }
     ],
     "buildPresets": [
@@ -73,6 +97,20 @@
         ],
         "configurePreset": "Release",
         "configuration": "Release"
+      },
+      {
+        "name": "Release32",
+        "inherits": [
+          "Release"
+        ],
+        "configurePreset": "Release32"
+      },
+      {
+        "name": "Debug32",
+        "inherits": [
+          "Debug"
+        ],
+        "configurePreset": "Debug32"
       }
     ],
     "testPresets": [

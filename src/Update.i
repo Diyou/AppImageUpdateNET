@@ -7,7 +7,6 @@
 %include "std_string_ref.i"
 
 %inline %{
-    typedef unsigned long size_t;
     typedef long off_t;
 %}
 

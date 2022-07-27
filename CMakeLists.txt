@@ -2,6 +2,14 @@ cmake_minimum_required(VERSION 3.20)
 
 project(AppImageUpdateNET LANGUAGES C CXX)
 
+if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+        # 64 bits
+        set(IS32Bit FALSE)
+elseif(CMAKE_SIZEOF_VOID_P EQUAL 4)
+        # 32 bits
+        set(IS32Bit TRUE)
+endif()
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CSharpWrapper.csprojDIR "${CMAKE_CURRENT_SOURCE_DIR}/CSharpWrapper")
@@ -32,7 +40,7 @@ SWIG_ADD_LIBRARY(appimageupdate
         SOURCES src/Update.i
 )
 set_target_properties(appimageupdate PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY ${CSharpWrapper.csprojDIR}/runtimes/linux-x64/native
+        LIBRARY_OUTPUT_DIRECTORY ${CSharpWrapper.csprojDIR}/runtimes/linux-x$<IF:$<BOOL:${IS32Bit}>,86,64>/native
 )
 target_compile_features(appimageupdate PRIVATE cxx_std_17)
 
@@ -64,7 +72,7 @@ add_custom_target(${PROJECT_NAME}.nupkg
 )
 
 enable_testing()
-add_subdirectory(tests)
+add_subdirectory(Tests)
 
 add_custom_target(TESTS ctest -C $<CONFIGURATION> --output-on-failure
         COMMENT "Run Tests..."
