@@ -54,6 +54,7 @@ public class Updater
     public Updater(UpdaterOptions options)
     {
         this.options = options;
+        Logger = new GenericLogger();
 
         try
         {

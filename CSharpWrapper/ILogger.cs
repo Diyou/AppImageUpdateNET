@@ -30,6 +30,17 @@ namespace AppImage.Update
 
         public void Write(string message, LogLevel logLevel);
     }
+
+    internal class GenericLogger : ILogger
+    {
+        public void Dispose()
+        {
+        }
+        public LogLevel Level { get; set; } = LogLevel.Fatal;
+        public void Write(string message, LogLevel logLevel)
+        {
+        }
+    }
 }
 
 
