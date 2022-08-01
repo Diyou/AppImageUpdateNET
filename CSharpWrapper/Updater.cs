@@ -41,35 +41,31 @@ public class Updater
     public static bool IsAppImage => AppImageLocation != null;
 
     private readonly Native.Updater handle;
-    private UpdaterOptions options { get; }
+
+    private readonly UpdaterOptions options;
+
+    public ILogger Logger { get; init; } = new GenericLogger();
 
     private bool? hasUpdates;
 
     /// <summary>
     /// A convenience wrapper for the native AppImage Updater class<para />
-    /// Github: https://github.com/AppImage/AppImageUpdate
+    /// Source: <a href="https://github.com/AppImage/AppImageUpdate">Github</a>
     /// </summary>
-    /// <param name="options"><see cref="UpdaterOptions"/></param>
     /// <exception cref="ArgumentException">When <see cref="UpdaterOptions.AppPath"/> can't be resolved</exception>
+    /// <seealso cref="UpdaterOptions"/>
     public Updater(UpdaterOptions options)
     {
         this.options = options;
-        Logger = new GenericLogger();
 
         try
         {
-            handle = new Native.Updater(Path.GetFullPath(options.AppPath), options.Overwrite);
+            handle = new Native.Updater(Path.GetFullPath(this.options.AppPath), this.options.Overwrite);
         }
         catch (Exception e)
         {
             throw new ArgumentException(e.Message, e);
         }
-    }
-
-    /// <inheritdoc cref="Updater(UpdaterOptions)"/>
-    public Updater(string pathToAppImage, bool overwrite = false)
-        : this(new UpdaterOptions { AppPath = pathToAppImage, Overwrite = overwrite })
-    {
     }
 
     /// <summary>
@@ -288,6 +284,4 @@ public class Updater
             Logger.Filter(statusMessage, LogLevel.Debug);
         }
     }
-
-    public ILogger Logger { get; init; }
 }
