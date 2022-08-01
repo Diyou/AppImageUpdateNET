@@ -86,7 +86,7 @@ public class Updater
 
         if (success) return description;
 
-        Logger.Write("Failed to parse AppImage. See above for more information", LogLevel.Fatal);
+        Logger.Filter("Failed to parse AppImage. See above for more information", LogLevel.Fatal);
         return null;
     }
 
@@ -101,7 +101,7 @@ public class Updater
     {
         if (handle.state() != State.INITIALIZED)
         {
-            Logger.Write("Update already started.", LogLevel.Warn);
+            Logger.Filter("Update already started.", LogLevel.Warn);
             return hasUpdates;
         }
 
@@ -114,18 +114,18 @@ public class Updater
         else
         {
             hasUpdates = null;
-            Logger.Write("Update check Failed", LogLevel.Error);
+            Logger.Filter("Update check Failed", LogLevel.Error);
         }
 
         checkForStatusMessages();
 
         if (hasUpdates.HasValue && hasUpdates.Value)
         {
-            Logger.Write("Update available.", LogLevel.Info);
+            Logger.Filter("Update available.", LogLevel.Info);
         }
         else
         {
-            Logger.Write("No Updates available.", LogLevel.Debug);
+            Logger.Filter("No Updates available.", LogLevel.Debug);
         }
 
         return hasUpdates;
@@ -134,7 +134,7 @@ public class Updater
     public ConfiguredTaskAwaitable<State> Download => Task.Run(() =>
     {
         handle.start();
-        Logger.Write("Started Downloading", LogLevel.Debug);
+        Logger.Filter("Started Downloading", LogLevel.Debug);
 
         var timer = new Timer(100);
         var reset = new ManualResetEvent(false);
@@ -146,7 +146,7 @@ public class Updater
 
             if (!handle.progress(ref progress))
             {
-                Logger.Write("Error occured while retrieving progress information", LogLevel.Error);
+                Logger.Filter("Error occured while retrieving progress information", LogLevel.Error);
                 reset.Set();
             }
 
@@ -160,7 +160,7 @@ public class Updater
 
         if (handle.hasError())
         {
-            Logger.Write("Update failed", LogLevel.Error);
+            Logger.Filter("Update failed", LogLevel.Error);
         }
 
         return handle.state();
@@ -171,7 +171,7 @@ public class Updater
     {
         if (handle.state() != State.RUNNING)
         {
-            Logger.Write("Download is not in process", LogLevel.Warn);
+            Logger.Filter("Download is not in process", LogLevel.Warn);
             return;
         }
 
@@ -187,7 +187,7 @@ public class Updater
     {
         if (handle.state() != State.SUCCESS)
         {
-            Logger.Write("Can not validate before a successful download.", LogLevel.Error);
+            Logger.Filter("Can not validate before a successful download.", LogLevel.Error);
             return null;
         }
 
@@ -195,7 +195,7 @@ public class Updater
 
         if (!handle.pathToNewFile(ref newFilePath))
         {
-            Logger.Write("Could not determine path to new file", LogLevel.Error);
+            Logger.Filter("Could not determine path to new file", LogLevel.Error);
             return null;
         }
 
@@ -208,15 +208,15 @@ public class Updater
         bool failed()
         {
             handle.restoreOriginalFile();
-            Logger.Write($"Validation failed: {Native.Updater.signatureValidationMessage(validationState)}", LogLevel.Error);
-            Logger.Write("Restoring original file", LogLevel.Error);
+            Logger.Filter($"Validation failed: {Native.Updater.signatureValidationMessage(validationState)}", LogLevel.Error);
+            Logger.Filter("Restoring original file", LogLevel.Error);
             return false;
         }
 
         bool success()
         {
             handle.copyPermissionsToNewFile();
-            Logger.Write("Signature validation passed", LogLevel.Debug);
+            Logger.Filter("Signature validation passed", LogLevel.Debug);
 
             if (options.RemoveOldFile)
             {
@@ -228,20 +228,20 @@ public class Updater
                     try
                     {
                         File.Delete(oldFilePath);
-                        Logger.Write($"Deleting: {oldFilePath}", LogLevel.Debug);
+                        Logger.Filter($"Deleting: {oldFilePath}", LogLevel.Debug);
                     }
                     catch (Exception e)
                     {
-                        Logger.Write(e.Message, LogLevel.Error);
+                        Logger.Filter(e.Message, LogLevel.Error);
                     }
                 }
                 else
                 {
-                    Logger.Write($"Could not find old AppImage: {oldFilePath}", LogLevel.Warn);
+                    Logger.Filter($"Could not find old AppImage: {oldFilePath}", LogLevel.Warn);
                 }
             }
 
-            Logger.Write("Update successful.", LogLevel.Info);
+            Logger.Filter("Update successful.", LogLevel.Info);
             return true;
         }
 
@@ -259,7 +259,7 @@ public class Updater
                 handle.copyPermissionsToNewFile();
             }
 
-            Logger.Write($"Validation warning: {Native.Updater.signatureValidationMessage(validationState)}", LogLevel.Warn);
+            Logger.Filter($"Validation warning: {Native.Updater.signatureValidationMessage(validationState)}", LogLevel.Warn);
         }
 
         if (validationState is <= ValidationState.VALIDATION_WARNING or ValidationState.VALIDATION_NOT_SIGNED) return success();
@@ -284,7 +284,7 @@ public class Updater
 
         while (handle.nextStatusMessage(ref statusMessage))
         {
-            Logger.Write(statusMessage, LogLevel.Debug);
+            Logger.Filter(statusMessage, LogLevel.Debug);
         }
     }
 

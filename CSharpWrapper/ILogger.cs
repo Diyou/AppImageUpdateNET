@@ -16,7 +16,17 @@ namespace AppImage.Update
 
     public interface ILogger : IDisposable
     {
+        /// <summary>
+        /// The lowest level to be passed
+        /// </summary>
         public LogLevel Level { get; set; }
+
+        internal void Filter(string message, LogLevel logLevel)
+        {
+            if (logLevel < Level) return;
+
+            Write(message, logLevel);
+        }
 
         public void Write(string message, LogLevel logLevel);
     }

@@ -175,8 +175,6 @@ internal static class UpdaterTool
         public LogLevel Level { get; set; } = LogLevel.Debug;
         public void Write(string message, LogLevel logLevel)
         {
-            if (logLevel < Level) return;
-
             switch (logLevel)
             {
                 case LogLevel.Debug:
