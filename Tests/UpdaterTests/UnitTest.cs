@@ -77,12 +77,11 @@ public class UpdaterClass
 
                 Thread.Sleep(100);
 
-                TestContext.Out.WriteLine($"Bytes: {remoteFileSize} ➡ {Math.Round(remoteFileSize / Math.Pow(1024, 2),2)}MB");
+                TestContext.Out.WriteLine($"Bytes: {remoteFileSize} ➡ {Math.Round(remoteFileSize / Math.Pow(1024, 2), 2)}MB");
 
-                if(updater.isDone())threadFinished = true;
+                if (updater.isDone()) threadFinished = true;
                 TestContext.Out.WriteLine($"State: {updater.state()}");
             }
-
         });
         tr.Start();
         tr.Join();
