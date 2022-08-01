@@ -25,6 +25,7 @@ namespace appimage{
         %catches(std::invalid_argument,std::runtime_error) Updater::Updater;
         %catches(std::runtime_error) Updater::checkForChanges;
         %catches(std::runtime_error) Updater::start;
+        %catches(std::runtime_error) Updater::stop;
 
         %apply double& INOUT { double& progress};
         bool Updater::progress(double& progress);

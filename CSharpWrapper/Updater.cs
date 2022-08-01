@@ -36,6 +36,7 @@ public class Updater
 
     /// <summary>
     /// Checks whether the application was launched as an AppImage via the $APPIMAGE Environment Variable.'
+    /// <seealso cref="AppImageLocation"/>
     /// </summary>
     public static bool IsAppImage => AppImageLocation != null;
 
@@ -43,6 +44,13 @@ public class Updater
     private UpdaterOptions options { get; }
 
     private bool? hasUpdates;
+
+    /// <summary>
+    /// A convenience wrapper for the native AppImage Updater class<para />
+    /// Github: https://github.com/AppImage/AppImageUpdate
+    /// </summary>
+    /// <param name="options"><see cref="UpdaterOptions"/></param>
+    /// <exception cref="ArgumentException">When <see cref="UpdaterOptions.AppPath"/> can't be resolved</exception>
     public Updater(UpdaterOptions options)
     {
         this.options = options;
@@ -56,6 +64,8 @@ public class Updater
             throw new ArgumentException(e.Message, e);
         }
     }
+
+    /// <inheritdoc cref="Updater(UpdaterOptions)"/>
     public Updater(string pathToAppImage, bool overwrite = false)
         : this(new UpdaterOptions { AppPath = pathToAppImage, Overwrite = overwrite })
     {
@@ -86,6 +96,7 @@ public class Updater
     /// <returns>
     /// null if parsing fails
     /// </returns>
+    /// <exception cref="ApplicationException">On curl errors</exception>
     public bool? HasUpdates()
     {
         if (handle.state() != State.INITIALIZED)
@@ -120,7 +131,7 @@ public class Updater
         return hasUpdates;
     }
 
-    public ConfiguredTaskAwaitable<State> Update => Task.Run(() =>
+    public ConfiguredTaskAwaitable<State> Download => Task.Run(() =>
     {
         handle.start();
         Logger.Write("Started Downloading", LogLevel.Debug);
@@ -155,10 +166,22 @@ public class Updater
         return handle.state();
     }).ConfigureAwait(false);
 
+    /// <exception cref="ApplicationException">Native code is not implemented yet</exception>
+    public void Stop()
+    {
+        if (handle.state() != State.RUNNING)
+        {
+            Logger.Write("Download is not in process", LogLevel.Warn);
+            return;
+        }
+
+        handle.stop();
+    }
+
     /// <summary>
     /// Post download validation.
     /// </summary>
-    /// <param name="strict">Allows only </param>
+    /// <param name="strict">Allows only a successful pass</param>
     /// <returns></returns>
     public bool? Validate(bool strict = false)
     {
@@ -242,6 +265,17 @@ public class Updater
         if (validationState is <= ValidationState.VALIDATION_WARNING or ValidationState.VALIDATION_NOT_SIGNED) return success();
 
         return failed();
+    }
+
+    /// <summary>
+    /// Gets or sets the raw update information
+    /// </summary>
+    /// <seealso cref="Native.Updater.updateInformation" />
+    /// <seealso cref="Native.Updater.setUpdateInformation" />
+    public string RawUpdateInformation
+    {
+        get => handle.updateInformation();
+        set => handle.setUpdateInformation(value);
     }
 
     private void checkForStatusMessages()

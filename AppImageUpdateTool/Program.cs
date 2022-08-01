@@ -153,7 +153,7 @@ internal static class UpdaterTool
 
             if (hasUpdates.HasValue && hasUpdates.Value)
             {
-                updater.Update.GetAwaiter().GetResult();
+                updater.Download.GetAwaiter().GetResult();
                 bool? validated = updater.Validate();
                 return (int)(validated.HasValue && validated.Value ? Exit.Success : Exit.Failure);
             }
