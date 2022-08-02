@@ -32,7 +32,6 @@ set_property(SOURCE src/Update.i PROPERTY COMPILE_OPTIONS
         -namespace AppImage.Update.Native
 )
 
-# x64 lib
 SWIG_ADD_LIBRARY(appimageupdate
         TYPE MODULE
         LANGUAGE csharp

@@ -17,12 +17,10 @@
         <ProjectReference Include="../../CSharpWrapper/CSharpWrapper.csproj" />
     </ItemGroup>
 
-    <Target Name="CopyFilesToOutputDirectory" AfterTargets="Build">
-        <ItemGroup>
-            <NativeLibs Include="$(OutDir)runtimes/linux-x64/native/*.*" />
-            <None Include="@(NativeLibs)" />
-        </ItemGroup>
-        <Copy SourceFiles="@(None)" DestinationFolder="$(OutDir)" />
+    <Target Name="CopyRuntimes" AfterTargets="AfterBuild">
+      <Copy SourceFiles="$(OutDir)runtimes/linux-x64/native/libappimageupdate.so"
+            DestinationFolder="$(OutDir)"
+            SkipUnchangedFiles="true"/>
     </Target>
 
 </Project>

@@ -9,19 +9,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CSharpWrapper\CSharpWrapper.csproj" />
+      <ProjectReference Include="../CSharpWrapper/CSharpWrapper.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Mono.Options" Version="6.12.0.148" />
     </ItemGroup>
 
-    <Target Name="CopyFilesToOutputDirectory" AfterTargets="Build">
-        <ItemGroup>
-            <NativeLibs Include="$(OutDir)runtimes/linux-x64/native/*.*" />
-            <None Include="@(NativeLibs)" />
-        </ItemGroup>
-        <Copy SourceFiles="@(None)" DestinationFolder="$(OutDir)" />
+    <Target Name="CopyRuntimes" AfterTargets="AfterBuild">
+      <Copy SourceFiles="$(OutDir)runtimes/linux-x64/native/libappimageupdate.so" 
+            DestinationFolder="$(OutDir)"
+            SkipUnchangedFiles="true"/>
     </Target>
-
+  
 </Project>
