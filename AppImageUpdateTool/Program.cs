@@ -153,7 +153,10 @@ internal static class UpdaterTool
 
             if (hasUpdates.HasValue && hasUpdates.Value)
             {
-                updater.Download.GetAwaiter().GetResult();
+                updater.Download(progress =>
+                {
+                    logger.Write($"{progress * 100}", LogLevel.Info);
+                }).GetAwaiter().GetResult();
                 bool? validated = updater.Validate();
                 return (int)(validated.HasValue && validated.Value ? Exit.Success : Exit.Failure);
             }

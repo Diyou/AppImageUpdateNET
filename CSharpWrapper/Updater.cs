@@ -14,24 +14,39 @@ namespace AppImage.Update;
 using State = Native.Updater.State;
 using ValidationState = Native.Updater.ValidationState;
 
+/// <summary>
+/// Options to construct <see cref="Updater"/>
+/// </summary>
 [SupportedOSPlatform("linux")]
 public sealed class UpdaterOptions
 {
-    public string AppPath;
-    public bool Overwrite;
-    public bool RemoveOldFile;
+    /// <summary>
+    /// Absolute path to the AppImage that is to be updated
+    /// </summary>
+    public string AppPath { get; init; } = Updater.AppImageLocation;
 
-    public UpdaterOptions()
-    {
-        AppPath = Updater.AppImageLocation;
-        Overwrite = false;
-        RemoveOldFile = false;
-    }
+    /// <summary>
+    /// Whether the updated AppImage should keep its original file name
+    /// </summary>
+    public bool Overwrite = false;
+
+    /// <summary>
+    /// Whether to remove the old AppImage
+    /// </summary>
+    public bool RemoveOldFile = false;
 }
 
+/// <summary>
+/// A convenience class that utilizes the native wrapped functions of  <a href="https://github.com/AppImage/AppImageUpdate">AppImageUpdate</a>
+/// <seealso cref="Native.Updater" />
+/// </summary>
 [SupportedOSPlatform("linux")]
 public class Updater
 {
+    /// <summary>
+    /// The resolved path to executed AppImage
+    /// </summary>
+    /// <remarks>Is null when not launched as an AppImage</remarks>
     public static string AppImageLocation => Environment.GetEnvironmentVariable("APPIMAGE");
 
     /// <summary>
@@ -44,6 +59,9 @@ public class Updater
 
     private readonly UpdaterOptions options;
 
+    /// <summary>
+    /// Sets the Logger that receives status messages
+    /// </summary>
     public ILogger Logger { get; init; } = new GenericLogger();
 
     private bool? hasUpdates;
@@ -54,9 +72,9 @@ public class Updater
     /// </summary>
     /// <exception cref="ArgumentException">When <see cref="UpdaterOptions.AppPath"/> can't be resolved</exception>
     /// <seealso cref="UpdaterOptions"/>
-    public Updater(UpdaterOptions options)
+    public Updater(UpdaterOptions options = null)
     {
-        this.options = options;
+        this.options = options??new UpdaterOptions();
 
         try
         {
@@ -128,7 +146,12 @@ public class Updater
         return hasUpdates;
     }
 
-    public ConfiguredTaskAwaitable<State> Download => Task.Run(() =>
+    /// <summary>
+    /// Downloads the new AppImage specified in <see cref="RawUpdateInformation"/>
+    /// </summary>
+    /// <param name="progressCallBack">Callback that passes the download progress from 0 to 1</param>
+    /// <returns></returns>
+    public ConfiguredTaskAwaitable<State> Download(Action<double> progressCallBack = null) => Task.Run(() =>
     {
         handle.start();
         Logger.Filter("Started Downloading", LogLevel.Debug);
@@ -146,6 +169,8 @@ public class Updater
                 Logger.Filter("Error occured while retrieving progress information", LogLevel.Error);
                 reset.Set();
             }
+
+            progressCallBack?.Invoke(progress);
 
             if (handle.isDone()) reset.Set();
         };

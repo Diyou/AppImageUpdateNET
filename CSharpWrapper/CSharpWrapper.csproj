@@ -15,6 +15,7 @@
     <OutputType>Library</OutputType>
     <AssemblyName>AppImageUpdate</AssemblyName>
     <RootNamespace>AppImage.Update</RootNamespace>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

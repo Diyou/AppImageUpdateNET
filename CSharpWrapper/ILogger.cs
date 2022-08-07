@@ -3,6 +3,8 @@
 
 using System;
 
+#pragma warning disable CS1591
+
 namespace AppImage.Update
 {
     public enum LogLevel
@@ -15,6 +17,7 @@ namespace AppImage.Update
     }
 
     public interface ILogger : IDisposable
+
     {
         /// <summary>
         /// The lowest level to be passed
